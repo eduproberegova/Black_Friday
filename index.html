@@ -1,0 +1,1284 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Atrapados en el centro comercial · Black Friday</title>
+<meta name="description" content="Escape room de español sobre el Black Friday: cinco tiendas, una palabra secreta. Niveles A1 y A2–B1. @eduproberegova">
+<meta name="theme-color" content="#C8203F">
+<meta property="og:title" content="Atrapados en el centro comercial · Black Friday">
+<meta property="og:description" content="Escape room de español: sal del centro comercial en la noche del Black Friday. Niveles A1 y A2–B1.">
+<meta property="og:image" content="https://eduproberegova.github.io/Atrapados-Black-Friday/og-image.jpg">
+<meta property="og:url" content="https://eduproberegova.github.io/Atrapados-Black-Friday/">
+<meta property="og:type" content="website">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=JetBrains+Mono:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --red:#C8203F; --red-d:#A3172F; --blue:#B3D1ED; --blue-l:#DCEAF7; --bg:#F3F7FB;
+  --ink:#1F2433; --muted:#5B6478; --card:#FFFFFF; --line:#D5E2F0;
+  --marigold:#F5A300; --orange:#E8730C; --purple:#6F48A8; --magenta:#D6336C; --teal:#1F8A82;
+  --ok:#1E8E5A; --ok-bg:#E3F5EC; --warn:#B86E00; --warn-bg:#FFF2D9; --bad:#C8203F; --bad-bg:#FBE4E8;
+  --r:16px; --shadow:0 2px 0 rgba(31,36,51,.06), 0 8px 24px rgba(31,36,51,.07);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--ink);font-family:"Source Sans 3",system-ui,sans-serif;font-size:18px;line-height:1.5;-webkit-text-size-adjust:100%}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif;line-height:1.15;margin:0 0 .5em}
+h1{font-size:clamp(2rem,7vw,3.2rem);font-weight:800;letter-spacing:-.02em}
+h2{font-size:clamp(1.4rem,4.5vw,1.9rem);font-weight:800}
+h3{font-size:1.15rem;font-weight:700}
+p{margin:0 0 .8em}
+button{font:inherit;cursor:pointer}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* papel picado */
+.picado{display:block;width:100%;height:64px}
+.top{position:sticky;top:0;z-index:20;background:var(--bg)}
+.bar{max-width:820px;margin:0 auto;padding:6px 16px 8px;display:flex;align-items:center;gap:12px;justify-content:space-between}
+.brand{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--red);font-weight:700;letter-spacing:.02em;white-space:nowrap;display:flex;align-items:center;gap:8px}
+.brand img{width:36px;height:36px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(31,36,51,.15)}
+.doors{display:flex;gap:6px}
+.door-dot{width:30px;height:36px;border-radius:15px 15px 4px 4px;border:2px solid var(--line);background:#fff;display:grid;place-items:center;font-family:"JetBrains Mono",monospace;font-weight:700;font-size:.85rem;color:var(--muted)}
+.door-dot.open{background:var(--marigold);border-color:var(--orange);color:#fff}
+.door-dot.nolet{background:#E9EDF3;border-color:#C5CFDC;color:var(--muted)}
+.door-dot.now{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,32,63,.15)}
+.rec{margin-top:10px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px}
+.rec.on{border-color:var(--red);box-shadow:0 0 0 3px rgba(200,32,63,.12)}
+.rec.done{border-color:var(--ok)}
+.rec.need{border-color:var(--bad);background:var(--bad-bg)}
+.recrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.recbtn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:999px;padding:10px 18px;font-weight:700;background:var(--red);color:#fff;box-shadow:0 3px 0 var(--red-d)}
+.recbtn .dot{width:12px;height:12px;border-radius:50%;background:#fff}
+.rec.on .recbtn .dot{border-radius:2px;animation:blink 1s infinite}
+.recbtn[disabled]{opacity:.5}
+@keyframes blink{50%{opacity:.3}}
+.recinfo{font-weight:600;color:var(--muted);font-size:.95rem}
+.recinfo.bad{color:var(--bad)}
+.rec.done .recinfo{color:var(--ok)}
+.meter{height:6px;border-radius:3px;background:var(--blue-l);margin-top:8px;overflow:hidden;display:none}
+.rec.on .meter{display:block}
+.meter i{display:block;height:100%;width:0;background:var(--ok);transition:width .1s}
+.recout audio{width:100%;margin-top:8px}
+.dl{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:10px}
+.dl p{flex-basis:100%;margin:0}
+.dl a.btn{text-decoration:none}
+textarea.txt{display:block;width:100%;font:inherit;font-size:1.02rem;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none;resize:vertical;min-height:96px;line-height:1.45;margin-top:10px}
+textarea.txt:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(179,209,237,.6)}
+.txt.need{border-color:var(--bad);background:var(--bad-bg)}
+.txt:disabled{background:#F6F8FB;color:var(--ink)}
+.speak .sq span{display:block}
+.remark{background:var(--warn-bg);border-left:4px solid var(--marigold);border-radius:8px;padding:10px 14px}
+.verses,.ocard{display:grid;gap:10px;margin-top:6px}
+.ocard{border:2px solid var(--marigold);border-radius:14px;padding:14px;background:#FFF8E8}
+.verse{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;font-weight:600;color:var(--muted)}
+.ocard .verse{grid-template-columns:190px 1fr}
+.card.send{text-align:center}
+.toast{position:fixed;left:50%;bottom:90px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:10px 16px;border-radius:12px;font-weight:600;opacity:0;transition:.25s;z-index:50;pointer-events:none;max-width:90vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+@media (max-width:520px){ .verse,.ocard .verse{grid-template-columns:1fr;gap:4px} }
+.hidden{display:none!important}
+
+main{max-width:820px;margin:0 auto;padding:8px 16px 140px}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:22px;margin:0 0 18px}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--red);font-weight:700;margin-bottom:6px}
+
+/* hero */
+.hero{border-radius:22px;overflow:hidden;position:relative;margin:0 0 18px;box-shadow:var(--shadow);background:#FFF8E8}
+.hero .pic.svg{padding:4% 6% 2%}
+.hero .pic{aspect-ratio:16/9;border-radius:0}
+.hero .pic .fb{font-size:4.5rem;background:radial-gradient(circle at 30% 30%,#F5A300 0,#E8730C 25%,#6F48A8 70%,#2B1B3F 100%)}
+
+/* pictures with fallback */
+.pic{position:relative;width:100%;aspect-ratio:1/1;border-radius:14px;overflow:hidden;background:var(--blue-l)}
+.pic img{width:100%;height:100%;object-fit:cover;display:block}
+.xolo .ava img{object-position:50% 50%}
+.flip .face .pic.photo{border-radius:10px}
+.hero .pic.photo img{object-position:50% 45%}
+.pic.svg{background:transparent}
+.pic.svg svg{width:100%;height:100%;display:block}
+.pic .fb{position:absolute;inset:0;display:grid;place-items:center;font-size:3rem;background:linear-gradient(135deg,var(--blue-l),#fff 60%,#FFE7B8)}
+
+/* xolo speech */
+.xolo{display:flex;gap:14px;align-items:flex-start}
+.xolo .ava{flex:0 0 72px;width:72px;height:72px;border-radius:50%;aspect-ratio:1/1;border:3px solid var(--marigold)}
+.xolo .ava .fb{font-size:2.2rem}
+.bubble{background:var(--blue-l);border-radius:4px 16px 16px 16px;padding:12px 16px;flex:1}
+.bubble b{color:var(--red)}
+
+/* level choice */
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0 4px}
+.lvl{border:2px solid var(--line);background:#fff;border-radius:14px;padding:14px;text-align:left;transition:.15s}
+.lvl strong{display:block;font-family:"Bricolage Grotesque",sans-serif;font-size:1.35rem}
+.lvl span{font-size:.92rem;color:var(--muted)}
+.lvl.sel{border-color:var(--red);background:#FFF5F7;box-shadow:0 0 0 3px rgba(200,32,63,.12)}
+label.f{display:block;font-weight:600;margin:14px 0 6px}
+input.txt{width:100%;font:inherit;font-size:1.05rem;padding:12px 14px;border:2px solid var(--line);border-radius:12px;background:#fff;color:var(--ink);outline:none}
+input.txt:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(179,209,237,.6)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:999px;padding:13px 24px;font-weight:700;font-size:1.02rem;background:var(--red);color:#fff;box-shadow:0 3px 0 var(--red-d);transition:transform .08s}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 var(--red-d)}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+.btn.ghost{background:#fff;color:var(--ink);border:2px solid var(--line);box-shadow:none}
+.btn.gold{background:var(--marigold);box-shadow:0 3px 0 var(--orange);color:#2B1B00}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.small{font-size:.9rem;color:var(--muted)}
+.fb-line{margin-top:12px;font-weight:600;min-height:1.4em}
+.fb-line.ok{color:var(--ok)} .fb-line.bad{color:var(--bad)} .fb-line.warn{color:var(--warn)}
+.hintbox{margin-top:12px;background:var(--warn-bg);border-left:4px solid var(--marigold);padding:10px 14px;border-radius:8px;font-size:.98rem}
+
+/* reading */
+details.reading{background:#FFFBF2;border:1px solid #F3DDB0;border-radius:14px;padding:4px 18px;margin:0 0 16px}
+details.reading summary{cursor:pointer;font-weight:700;padding:10px 0;color:var(--orange)}
+details.reading .rtext p{margin:0 0 .75em}
+.audio{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#fff;border:1px solid #F3DDB0;border-radius:12px;padding:8px 12px;margin:0 0 14px}
+.audio span{font-weight:700;color:var(--purple)}
+.audio audio{flex:1;min-width:220px;height:40px}
+.reading .rimg{max-width:260px;margin:4px auto 14px}
+.reading .rimg .pic{aspect-ratio:1/1}
+.tri{display:grid;gap:12px;margin-bottom:8px}
+.tri h3{color:var(--purple);margin-bottom:.25em}
+
+/* choice */
+.items{display:grid;gap:12px}
+.item{border:2px solid var(--line);border-radius:14px;padding:12px 14px;background:#fff;transition:border-color .15s}
+.item .q{font-weight:600;margin-bottom:8px}
+.item .num{font-family:"JetBrains Mono",monospace;color:var(--muted);font-size:.85rem;margin-right:6px}
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:2px solid var(--line);background:var(--bg);border-radius:999px;padding:7px 14px;font-weight:600;font-size:.95rem;color:var(--ink)}
+.opt.sel{background:var(--blue);border-color:#7FAFD9}
+.item.ok{border-color:var(--ok);background:var(--ok-bg)}
+.item.ok .opt.sel{background:var(--ok);border-color:var(--ok);color:#fff}
+.item.bad{border-color:var(--bad);background:var(--bad-bg)}
+.item.warn{border-color:var(--marigold);background:var(--warn-bg)}
+.item.ok .opt{pointer-events:none}
+.item.shown{border-color:var(--marigold);background:var(--warn-bg)}
+.item.shown .opt{pointer-events:none;opacity:.7}
+.item.shown .opt.right{opacity:1;background:var(--ok);border-color:var(--ok);color:#fff}
+.titem.shown{border-color:var(--marigold);background:var(--warn-bg)}
+.note.sol{color:var(--ok);font-size:.95rem}
+.gap .sol{color:var(--ok);font-weight:700;font-size:.95rem}
+.gap.shown input{border-color:var(--marigold);background:var(--warn-bg);text-decoration:line-through;color:var(--muted)}
+.chip.shown{border-color:var(--marigold);background:var(--warn-bg);pointer-events:none}
+
+/* flip cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.flip{perspective:900px;border:0;background:none;padding:0;text-align:left}
+.flip .in{position:relative;transition:transform .45s;transform-style:preserve-3d;min-height:220px}
+.flip.on .in{transform:rotateY(180deg)}
+.flip .face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:14px;background:#fff;box-shadow:var(--shadow);padding:10px;display:flex;flex-direction:column}
+.flip .face .pic{aspect-ratio:1/1;flex:0 0 auto}
+.flip .face .w{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:1.02rem;margin-top:8px;text-align:center}
+.flip .back{transform:rotateY(180deg);background:var(--blue-l);justify-content:center}
+.flip .back .w{color:var(--red);margin:0 0 6px}
+.flip .back p{font-size:.95rem;margin:0;text-align:center}
+.flip.seen .front{outline:3px solid var(--marigold);outline-offset:-3px}
+
+/* typed */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px}
+.titem{border:2px solid var(--line);border-radius:14px;padding:12px;background:#fff}
+.titem .pic{aspect-ratio:16/10;max-height:170px;margin-bottom:8px}
+.titem .clue{font-size:.98rem;margin-bottom:8px}
+.titem .pat{font-family:"JetBrains Mono",monospace;font-size:.85rem;color:var(--muted);margin-bottom:6px;letter-spacing:.04em}
+.ans{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ans .art{font-weight:700;color:var(--muted)}
+.ans input{flex:1;min-width:120px}
+.titem.ok{border-color:var(--ok);background:var(--ok-bg)}
+.titem.bad{border-color:var(--bad);background:var(--bad-bg)}
+.titem.warn{border-color:var(--marigold);background:var(--warn-bg)}
+.note{font-size:.85rem;font-weight:600;margin-top:6px}
+.note.warn{color:var(--warn)} .note.bad{color:var(--bad)}
+
+/* gaps */
+.gaptext{line-height:2.4;font-size:1.06rem}
+.gap{display:inline-flex;align-items:baseline;gap:4px;white-space:nowrap}
+.gap input{font:inherit;font-size:1rem;padding:4px 8px;border:2px solid var(--line);border-bottom-width:3px;border-radius:8px;background:#fff;color:var(--ink);outline:none;width:9ch;text-align:center}
+.gap input:focus{border-color:#7FAFD9}
+.gap .inf{color:var(--purple);font-style:italic;font-size:.95rem}
+.gap.ok input{border-color:var(--ok);background:var(--ok-bg);color:var(--ok);font-weight:700}
+.gap.bad input{border-color:var(--bad);background:var(--bad-bg)}
+.gap.warn input{border-color:var(--marigold);background:var(--warn-bg)}
+.gap .n{font-family:"JetBrains Mono",monospace;font-size:.7rem;color:var(--muted);vertical-align:super}
+
+/* order */
+.seq,.pool{display:grid;gap:8px}
+.seq{min-height:60px;border:2px dashed var(--line);border-radius:14px;padding:10px;margin-bottom:12px;background:#fff}
+.seq:empty::before{content:"Toca las frases en el orden correcto…";color:var(--muted);font-style:italic}
+.chip{border:2px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;text-align:left;font-size:1rem;display:flex;gap:10px;align-items:flex-start;color:var(--ink)}
+.chip .k{font-family:"JetBrains Mono",monospace;font-weight:700;color:var(--red);min-width:1.4em}
+.pool .chip{background:var(--bg)}
+.chip.ok{border-color:var(--ok);background:var(--ok-bg);pointer-events:none}
+.chip.flash{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* door transitions */
+.unlock{text-align:center}
+.bigletter{display:inline-grid;place-items:center;width:110px;height:130px;border-radius:55px 55px 12px 12px;background:var(--marigold);color:#fff;font-family:"Bricolage Grotesque",sans-serif;font-size:4.2rem;font-weight:800;box-shadow:0 6px 0 var(--orange);margin:6px 0 16px;animation:pop .5s ease-out}
+@keyframes pop{0%{transform:scale(.3) rotate(-12deg);opacity:0}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.bigletter.none{background:#E9EDF3;color:#9AA3B5;box-shadow:0 6px 0 #C5CFDC}
+.letters span.miss{background:#E9EDF3;color:#9AA3B5;box-shadow:0 4px 0 #C5CFDC}
+.letters{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:8px 0 16px}
+.letters span{width:52px;height:60px;border-radius:26px 26px 8px 8px;background:var(--marigold);color:#fff;display:grid;place-items:center;font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.8rem;box-shadow:0 4px 0 var(--orange)}
+
+/* certificate */
+.cert{border:3px solid var(--marigold);border-radius:20px;padding:26px 20px;text-align:center;background:linear-gradient(180deg,#FFF8E8,#fff 50%)}
+.cert .certlogo{display:block;margin:0 auto 8px;width:72px;height:72px}
+.cert .who{font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:1.8rem;color:var(--red);margin:6px 0}
+.stats{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:12px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:8px 14px}
+.stat b{display:block;font-family:"JetBrains Mono",monospace;font-size:1.2rem}
+.speak{display:grid;gap:12px}
+.speak .sq{background:#fff;border-left:5px solid var(--purple);border-radius:10px;padding:12px 14px}
+.speak .sq b{display:block;margin-bottom:4px}
+.speak .sq span{color:var(--muted);font-size:.95rem}
+.poem{font-family:"Bricolage Grotesque",sans-serif;font-size:1.15rem;background:var(--blue-l);border-radius:14px;padding:16px 20px;line-height:1.6;margin:10px 0}
+
+/* accent bar */
+.accents{position:fixed;left:0;right:0;bottom:0;z-index:30;background:rgba(255,255,255,.97);border-top:1px solid var(--line);padding:8px 10px calc(8px + env(safe-area-inset-bottom));display:flex;gap:6px;justify-content:center;flex-wrap:wrap;box-shadow:0 -4px 16px rgba(31,36,51,.08)}
+.accents button{min-width:42px;height:44px;border-radius:10px;border:2px solid var(--line);background:var(--bg);font-size:1.15rem;font-weight:700;color:var(--ink);-webkit-user-select:none;user-select:none;touch-action:manipulation}
+.accents button:active{background:var(--blue)}
+footer{text-align:center;font-size:.8rem;color:var(--muted);padding:10px 16px 30px}
+@media (max-width:520px){
+  body{font-size:17px}
+  .card{padding:18px 16px}
+  .levels{grid-template-columns:1fr}
+  .bar{gap:8px}
+  .brand span{display:none}
+  .brand img{width:30px;height:30px}
+  .door-dot{width:26px;height:32px;font-size:.78rem}
+  .cards{grid-template-columns:repeat(2,1fr)}
+  .flip .in{min-height:210px}
+  .xolo .ava{flex-basis:56px;width:56px;height:56px}
+  .accents{gap:4px;padding-left:6px;padding-right:6px}
+  .accents button{min-width:34px;height:42px;padding:0;font-size:1.05rem}
+  .gaptext{line-height:2.2}
+  .gap input{padding:2px 6px}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <svg class="picado" id="picado" viewBox="0 0 1200 64" preserveAspectRatio="none" aria-hidden="true"></svg>
+  <div class="bar">
+    <span class="brand"><img src="icon-192.png" alt="@eduproberegova" width="36" height="36"><span>@eduproberegova</span></span>
+    <div class="doors" id="doors"></div>
+  </div>
+</header>
+
+<main id="app"></main>
+
+<div class="accents hidden" id="accents" aria-label="Letras especiales"></div>
+<footer>© @eduproberegova · Atrapados en el centro comercial · Black Friday</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+"use strict";
+
+/* ============================================================
+   CONTENIDO
+   ============================================================ */
+var CFG = {
+  id: 'bf-2026',
+  title: 'Atrapados en el centro comercial',
+  eyebrow: 'Escape room · Black Friday',
+  tagline: 'Cinco tiendas, cinco letras y una palabra secreta. Abre cada puerta con tu español y sal del centro comercial antes de medianoche.',
+  guideImg: 'guia.jpg', guideEmoji: '🛍️',
+  letters: ['N','G','A','G','A'],
+  secret: 'GANGA', secretAlts: ['ganga','una ganga','la ganga'],
+  secretHint: 'Pista de Carmen: ¿cómo se llama una cosa buena y muy barata?',
+  certTitle: '¡Has salido del centro comercial!',
+  certText: 'ha encontrado la salida. La palabra secreta era <b>GANGA</b>: una cosa buena y muy barata.',
+  audioLabel: '🎧 Escucha el texto',
+  subject: 'Black Friday',
+  fileTag: 'BlackFriday',
+  strip: 'tags',
+  finalBtn: 'Abrir la salida 🔓'
+};
+
+var LETTERS = CFG.letters;
+
+var SYMB_A1 = [
+  {img:'camiseta.jpg', emoji:'👕', art:'la', main:'camiseta', alts:['camisetas','playera','remera'], back:'Es ropa para el verano. Tiene manga corta.'},
+  {img:'vaqueros.jpg', emoji:'👖', art:'los', main:'vaqueros', alts:['pantalones vaqueros','jeans','tejanos','vaquero'], back:'Son unos pantalones azules.'},
+  {img:'zapatos.jpg', emoji:'👞', art:'los', main:'zapatos', alts:['zapato'], back:'Los llevas en los pies.'},
+  {img:'abrigo.jpg', emoji:'🧥', art:'el', main:'abrigo', alts:[], back:'Lo llevas en invierno, cuando hace frío.'},
+  {img:'bolso.jpg', emoji:'👜', art:'el', main:'bolso', alts:['bolsa','cartera'], back:'Aquí llevas el móvil, las llaves y el dinero.'},
+  {img:'movil.jpg', emoji:'📱', art:'el', main:'móvil', alts:['celular','teléfono','teléfono móvil','smartphone'], back:'Con él llamas y escribes mensajes.'},
+  {img:'portatil.jpg', emoji:'💻', art:'el', main:'portátil', alts:['ordenador portátil','ordenador','laptop','computador portátil','computadora portátil','computadora'], back:'Es un ordenador pequeño. Puedes llevarlo a la universidad.'},
+  {img:'tarjeta.jpg', emoji:'💳', art:'la', main:'tarjeta', alts:['tarjeta de crédito','tarjeta bancaria','tarjeta de débito'], back:'Pagas con ella en la tienda.'}
+];
+var SYMB_B1 = [
+  {img:'descuento.jpg', emoji:'🏷️', art:'el', main:'descuento', alts:['descuentos'], back:'Es la parte del precio que no pagas: por ejemplo, un 30 %.'},
+  {img:'rebajas.jpg', emoji:'🛒', art:'las', main:'rebajas', alts:[], back:'Es la temporada de precios bajos; en España, en enero y en julio.'},
+  {img:'probador.jpg', emoji:'🚪', art:'el', main:'probador', alts:['probadores'], back:'Es el lugar de la tienda donde te pruebas la ropa.'},
+  {img:'talla.jpg', emoji:'📏', art:'la', main:'talla', alts:[], back:'Es el tamaño de la ropa: S, M, L…'},
+  {img:'caja.jpg', emoji:'🧾', art:'la', main:'caja', alts:[], back:'Es el lugar donde pagas antes de salir de la tienda.'},
+  {img:'tique.jpg', emoji:'🧾', art:'el', main:'tique', alts:['ticket','tíquet','tiquet','recibo','comprobante'], back:'Es el papel que te dan al pagar; lo necesitas para cambiar algo.'},
+  {img:'devolucion.jpg', emoji:'↩️', art:'la', main:'devolución', alts:[], back:'Es lo que pides cuando llevas un producto a la tienda y quieres recuperar tu dinero.'},
+  {img:'cola.jpg', emoji:'🧍', art:'la', main:'cola', alts:['fila'], back:'Son las personas que esperan, una detrás de otra, para pagar o para entrar.'},
+  {img:'carrito.jpg', emoji:'🛒', art:'el', main:'carrito', alts:['carro','carrito de la compra','carro de la compra'], back:'Lo empujas en el supermercado; en internet también tienes uno.'}
+];
+
+var LEVELS = {
+a1: {
+  label:'A1',
+  intro:'¡Hola! Me llamo <b>Carmen</b> y soy la vigilante del centro comercial <b>«El Gran Ahorro»</b>. Hoy es viernes, el <b>Black Friday</b>. Son las once de la noche y el centro está cerrado… ¡pero tú estás dentro! Para salir necesitas un código. Hay <b>cinco tiendas</b>. En cada tienda hay una letra. Con las cinco letras formas la <b>palabra secreta</b>.',
+  doors: [
+  { title:'¿Black Friday o Buen Fin?',
+    xolo:'Primera tienda. En México hay un «Black Friday» con nombre en español: <b>El Buen Fin</b>. ¿Conoces las diferencias?',
+    parts:[
+      {type:'choice', instr:'Lee las frases. ¿Es el Black Friday, el Buen Fin o los dos?',
+       options:['Black Friday','El Buen Fin','Los dos'],
+       items:[
+        {q:'Es de Estados Unidos.', a:0},
+        {q:'Es de México.', a:1},
+        {q:'Es el viernes después del Día de Acción de Gracias.', a:0},
+        {q:'En 2026 es del 13 al 17 de noviembre.', a:1},
+        {q:'Su nombre está en inglés.', a:0},
+        {q:'Hay muchos descuentos en las tiendas.', a:2},
+        {q:'Mucha gente compra por internet.', a:2},
+        {q:'Es en noviembre.', a:2}
+       ],
+       hint:'Black Friday: Estados Unidos, nombre en inglés, el viernes después de Acción de Gracias. El Buen Fin: México, del 13 al 17 de noviembre. Descuentos, compras por internet y noviembre: en los dos.'}
+    ]},
+  { title:'En la tienda',
+    xolo:'Segunda tienda: ropa y tecnología. Primero mira las tarjetas. Después escribe las palabras.',
+    parts:[
+      {type:'cards', instr:'Toca cada tarjeta para darle la vuelta. Lee y recuerda las palabras.', cards:SYMB_A1},
+      {type:'type', instr:'Escribe la palabra. Cada _ es una letra.', items:SYMB_A1, showPat:true, showClue:true, showImg:true,
+       hint:'Las palabras son: abrigo, bolso, camiseta, móvil, portátil, tarjeta, vaqueros, zapatos (en otro orden).'}
+    ]},
+  { title:'¿Por qué «Viernes Negro»?',
+    xolo:'Tercera tienda: una librería. Aquí hay un texto sobre el origen del nombre «Black Friday». Escucha y lee.',
+    reading:{title:'¿Por qué se llama «Black Friday»?', img:'filadelfia.jpg', emoji:'🚓', audio:'texto-a1.mp3', html:
+      '<p>En Estados Unidos, el cuarto jueves de noviembre es el Día de Acción de Gracias. Las familias comen pavo juntas. El día siguiente es viernes y muchas personas no trabajan: van de compras.</p>'+
+      '<p>En los años 60, en la ciudad de Filadelfia, ese viernes es un día terrible para la policía. Hay muchísimas personas en las calles y en las tiendas, y muchos coches. Además, el sábado hay un partido de fútbol americano muy importante y llegan muchos aficionados.</p>'+
+      '<p>Los policías trabajan doce horas y no descansan. Por eso llaman a ese día «Black Friday», es decir, «Viernes Negro»: es un día muy malo para ellos.</p>'+
+      '<p>Después, las tiendas cuentan otra historia: dicen que «negro» significa que ese día ganan mucho dinero. Hoy el Black Friday es el día de los descuentos en todo el mundo.</p>'},
+    parts:[
+      {type:'order', instr:'Ordena la historia. Toca las frases en el orden correcto.',
+       items:['Las familias comen pavo el Día de Acción de Gracias.','Muchas personas van de compras el viernes.','Por eso los policías de Filadelfia trabajan doce horas.','Los policías llaman a ese día «Black Friday».','Las tiendas cuentan otra historia sobre el nombre.'],
+       hint:'Primero la comida en familia; después las compras; luego la policía; al final, las tiendas.'},
+      {type:'choice', instr:'¿Verdadero o falso?', options:['Verdadero','Falso'],
+       items:[
+        {q:'El Día de Acción de Gracias es un jueves.', a:0},
+        {q:'El nombre «Black Friday» viene de Nueva York.', a:1},
+        {q:'El sábado hay un partido de fútbol americano.', a:0},
+        {q:'Los policías están muy contentos ese viernes.', a:1},
+        {q:'Para las tiendas, «negro» significa ganar dinero.', a:0},
+        {q:'Hoy el Black Friday solo existe en Estados Unidos.', a:1}
+       ],
+       hint:'Lee otra vez el segundo y el cuarto párrafo. ¿En qué ciudad pasa la historia?'}
+    ]},
+  { title:'¿Cuánto cuesta?',
+    xolo:'Cuarta tienda. ¡Todo tiene descuento! ¿Cuánto cuestan las cosas hoy?',
+    parts:[
+      {type:'choice', instr:'¿Este, esta, estos o estas?', options:['este','esta','estos','estas'],
+       items:[
+        {q:'¿Cuánto cuesta ___ camiseta?', a:1},
+        {q:'Mira, ___ zapatos son muy bonitos.', a:2},
+        {q:'¿Cuánto cuestan ___ vaqueros?', a:2},
+        {q:'Uf, ___ abrigo es muy caro.', a:0},
+        {q:'Hoy ___ chaquetas están en oferta.', a:3},
+        {q:'Me gusta mucho ___ bolso.', a:0},
+        {q:'Lo siento, ___ tarjeta no funciona.', a:1},
+        {q:'¿Son baratas ___ camisetas?', a:3}
+       ],
+       hint:'este + masculino singular (el abrigo) · esta + femenino singular (la camiseta) · estos + masculino plural (los zapatos) · estas + femenino plural (las chaquetas).'},
+      {type:'gaps', instr:'Hoy todo tiene un 50 % de descuento. Escribe el nuevo precio en letras.',
+       html:'<p>1. La camiseta: antes 20 €. Hoy cuesta [[0]] euros.</p><p>2. Los vaqueros: antes 60 €. Hoy cuestan [[1]] euros.</p><p>3. Los zapatos: antes 90 €. Hoy cuestan [[2]] euros.</p><p>4. El bolso: antes 30 €. Hoy cuesta [[3]] euros.</p><p>5. El abrigo: antes 200 €. Hoy cuesta [[4]] euros.</p><p>6. El móvil: antes 300 €. Hoy cuesta [[5]] euros.</p>',
+       gaps:[{inf:'en letras',a:['diez']},{inf:'en letras',a:['treinta']},{inf:'en letras',a:['cuarenta y cinco','cuarentaicinco']},{inf:'en letras',a:['quince']},{inf:'en letras',a:['cien']},{inf:'en letras',a:['ciento cincuenta']}],
+       hint:'La mitad de 20 es 10: diez. Recuerda: 15 quince, 30 treinta, 45 cuarenta y cinco, 100 cien, 150 ciento cincuenta.'}
+    ]},
+  { title:'¿Ganga o trampa?',
+    xolo:'Última tienda. Lee sobre el Black Friday en tres países. ¡Cuidado: no todas las ofertas son buenas!',
+    reading:{title:'Tres países', tri:[
+      {h:'El Buen Fin (México)', img:'mexico.jpg', emoji:'🇲🇽', p:'México tiene su propio Black Friday desde 2011: se llama El Buen Fin. En 2026 es del 13 al 17 de noviembre. Muchas tiendas tienen descuentos y la gente compra ropa, electrodomésticos y tecnología.'},
+      {h:'El Black Friday en España', img:'espana.jpg', emoji:'🇪🇸', p:'En España el Black Friday es popular desde hace más de diez años. Muchas tiendas tienen ofertas toda la semana. Pero, ¡cuidado!: algunas tiendas suben los precios antes y después los bajan. Otras tiendas celebran el «Green Friday»: piden comprar menos.'},
+      {h:'Чорна п’ятниця (Ucrania)', img:'ucrania.jpg', emoji:'🇺🇦', p:'En Ucrania se llama «Chorna piatnytsia». Es muy popular, sobre todo en las tiendas online. Para muchas personas es una buena ocasión para comprar regalos de Navidad más baratos.'}
+    ]},
+    parts:[
+      {type:'choice', instr:'Según los textos, ¿de qué país hablan las frases?', options:['México','España','Ucrania'],
+       items:[
+        {q:'Su Black Friday tiene un nombre en español.', a:0},
+        {q:'Mucha gente compra regalos de Navidad.', a:2},
+        {q:'Algunas tiendas suben los precios antes del Black Friday.', a:1},
+        {q:'Es muy popular en las tiendas online.', a:2},
+        {q:'Las ofertas duran toda la semana.', a:1},
+        {q:'Existe desde 2011.', a:0}
+       ],
+       hint:'México: El Buen Fin, desde 2011. España: ofertas toda la semana, precios que suben y bajan, Green Friday. Ucrania: tiendas online, regalos de Navidad.'},
+      {type:'choice', instr:'Elige la respuesta correcta.',
+       items:[
+        {q:'¿Qué es el «Green Friday»?', opts:['Una idea: comprar menos.','Un día con más descuentos.','Una tienda de ropa verde.'], a:0},
+        {q:'¿Qué hacen algunas tiendas en España?', opts:['Suben los precios y después los bajan.','Cierran el viernes.','Regalan la ropa.'], a:0},
+        {q:'¿Qué tienen en común los tres países?', opts:['Hay muchas ofertas en noviembre.','El nombre es igual en los tres países.','Las tiendas están cerradas.'], a:0}
+       ],
+       hint:'Lee otra vez los tres textos, sobre todo el de España.'}
+    ]}
+  ],
+  speak:[
+    {q:'¿Compras en el Black Friday? ¿Qué compras?', s:'Sí, compro… · No, no compro porque… · Normalmente compro…'},
+    {q:'¿Dónde compras: en las tiendas o por internet? ¿Por qué?', s:'Compro en… porque es más fácil / más barato / más rápido…'},
+    {q:'¿Qué te gustaría comprar con un descuento del 50 %?', s:'Me gustaría comprar… porque… · Cuesta… euros.'}
+  ],
+  write:{eyebrow:'Escribe', title:'Mi lista de compras',
+    text:'Tienes 100 euros para el Black Friday. ¿Qué compras? Escribe tres cosas con su precio y el total.',
+    remark:'',
+    fields:[{label:'1. Compro…', ph:'una camiseta por quince euros'},{label:'2. Compro…', ph:''},{label:'3. Compro…', ph:''},{label:'En total pago…', ph:'noventa euros'}],
+    minFilled:4}
+},
+
+b1: {
+  label:'A2–B1',
+  intro:'Soy <b>Carmen</b>, la vigilante del centro comercial <b>«El Gran Ahorro»</b>. Es la noche del <b>Black Friday</b>: hace una hora que hemos cerrado, pero tú te has quedado dentro. Las puertas solo se abren con un código de cinco letras. Para conseguirlo, tendrás que superar las pruebas de <b>cinco tiendas</b>. ¿Preparado o preparada?',
+  doors: [
+  { title:'¿Black Friday o Buen Fin?',
+    xolo:'Primera tienda. ¿Sabías que en México el Black Friday tiene nombre propio, <b>El Buen Fin</b>? Veamos si sabes diferenciarlos.',
+    parts:[
+      {type:'choice', instr:'¿A qué se refiere cada frase: al Black Friday, al Buen Fin o a los dos?',
+       options:['Black Friday','El Buen Fin','Los dos'],
+       items:[
+        {q:'Nació en Estados Unidos.', a:0},
+        {q:'Se celebra el día después de Acción de Gracias.', a:0},
+        {q:'Lo organizan desde 2011 el Gobierno y las empresas de México.', a:1},
+        {q:'En 2026 dura cinco días, del 13 al 17 de noviembre.', a:1},
+        {q:'Su nombre viene de la jerga de la policía de Filadelfia.', a:0},
+        {q:'Las tiendas ofrecen grandes descuentos.', a:2},
+        {q:'Muchas compras se hacen por internet.', a:2},
+        {q:'Se ha extendido a muchos países, como España o Ucrania.', a:0}
+       ],
+       hint:'El Buen Fin es mexicano: existe desde 2011 y en 2026 va del 13 al 17 de noviembre. El Black Friday nació en Estados Unidos y se ha extendido por el mundo. Descuentos y compras online hay en los dos.'}
+    ]},
+  { title:'En la tienda',
+    xolo:'Segunda tienda. Estas son las palabras que todo comprador necesita el Black Friday. Gira las tarjetas y memorízalas: después tendrás que escribirlas sin verlas.',
+    parts:[
+      {type:'cards', instr:'Toca cada tarjeta para darle la vuelta. Memoriza la palabra y su significado.', cards:SYMB_B1},
+      {type:'type', instr:'¿Qué palabra es? Escríbela. Te damos el artículo y la primera letra.', items:SYMB_B1, showPat:false, showFirst:true, showClue:true, showImg:false,
+       hint:'Las palabras son: caja, carrito, cola, descuento, devolución, probador, rebajas, talla, tique (en otro orden).'}
+    ]},
+  { title:'¿Por qué «Viernes Negro»?',
+    xolo:'Tercera tienda: una librería. ¿Sabes de dónde viene el nombre «Black Friday»? La explicación más famosa no es la verdadera. Escucha y lee.',
+    reading:{title:'¿Por qué se llama «Black Friday»?', img:'filadelfia.jpg', emoji:'🚓', audio:'texto-b1.mp3', html:
+      '<p>El cuarto jueves de noviembre, los estadounidenses celebran el Día de Acción de Gracias, y el viernes siguiente marca desde hace décadas el comienzo de las compras de Navidad.</p>'+
+      '<p>En los años 50 y 60, en Filadelfia, ese viernes era una pesadilla para la policía. Miles de personas llegaban al centro para hacer compras y, además, el sábado se jugaba un famoso partido de fútbol americano entre el Ejército y la Marina, que atraía a muchísimos aficionados. Las calles se llenaban de coches y de gente, y los agentes no podían tomarse el día libre: tenían que trabajar turnos de doce horas. Por eso empezaron a llamarlo «Black Friday».</p>'+
+      '<p>A los comerciantes no les gustaba nada un nombre tan negativo. Años más tarde se hizo popular otra explicación: ese día las tiendas por fin pasaban de los «números rojos» a los «números negros», es decir, empezaban a ganar dinero. Esta versión es hoy la más conocida, aunque no es la original.</p>'+
+      '<p>Con internet, el Black Friday salió de Estados Unidos y llegó a muchos países. A España, por ejemplo, llegó hacia 2012.</p>'},
+    parts:[
+      {type:'order', instr:'Ordena los hechos. Toca las frases en el orden correcto.',
+       items:['Miles de personas llegaban a Filadelfia para comprar y ver el partido.','Los policías tenían que trabajar turnos de doce horas.','Los policías empezaron a llamar a ese día «Black Friday».','A los comerciantes no les gustaba el nombre.','Se hizo popular la explicación de los «números negros».','El Black Friday llegó a España.'],
+       hint:'Primero la gente y el partido, después el trabajo de la policía, el nombre, la reacción de los comerciantes, la nueva explicación y, al final, la llegada a España.'},
+      {type:'choice', instr:'¿Verdadero o falso?', options:['Verdadero','Falso'],
+       items:[
+        {q:'El partido de fútbol americano se jugaba el sábado.', a:0},
+        {q:'Los policías podían tomarse el viernes libre.', a:1},
+        {q:'Los comerciantes inventaron el nombre «Black Friday».', a:1},
+        {q:'Estar en «números negros» significa ganar dinero.', a:0},
+        {q:'La explicación de los «números negros» es la original.', a:1},
+        {q:'El Black Friday llegó a España hacia 2012.', a:0}
+       ],
+       hint:'Fíjate en quién usó primero el nombre y en la frase «aunque no es la original».'}
+    ]},
+  { title:'Comparando ofertas',
+    xolo:'Cuarta tienda: tecnología. Lucía y Pablo quieren comprar un portátil. ¿Cuál es la mejor oferta?',
+    parts:[
+      {type:'gaps', instr:'Completa con comparativos y superlativos. (+) más, (−) menos, (=) tan… como.',
+       img:'portatiles.jpg', emoji:'💻',
+       html:'<p>Lucía y Pablo comparan portátiles en internet el Viernes Negro.</p><p>—Mira: el Lumen cuesta 550 euros y el Nova, 700. El Lumen es [[0]] que el Nova.</p><p>—Sí, pero el Nova tiene una pantalla [[1]] que el Lumen. Y la batería del Lumen solo dura seis horas: es [[2]] que la del Nova, que dura diez.</p><p>—Los dos pesan 1,2 kilos, así que el Lumen es [[3]] como el Nova.</p><p>—¿Y el Zeta? Cuesta 1200 euros: es el portátil [[4]] de la tienda.</p><p>—Es muy rápido, pero no lo necesito. El Lumen es [[5]] que el Zeta, pero para estudiar es suficiente. Y la pantalla del Zeta es [[6]] que la del Lumen: tiene 16 pulgadas, no 14.</p><p>—¡Mira! Hoy el Nova tiene un 30 % de descuento: cuesta 490 euros. ¡Es la [[7]] oferta del día!</p><p>—Y además no es [[8]] como el Zeta. ¡Lo compramos!</p>',
+       gaps:[{inf:'+ barato',a:['más barato']},{inf:'+ bueno',a:['mejor']},{inf:'+ malo',a:['peor']},{inf:'= ligero',a:['tan ligero']},{inf:'superlativo: caro',a:['más caro']},{inf:'− potente',a:['menos potente']},{inf:'+ grande',a:['más grande','mayor']},{inf:'superlativo: bueno',a:['mejor']},{inf:'= caro',a:['tan caro']}],
+       hint:'más / menos + adjetivo + que · tan + adjetivo + como · el / la más + adjetivo + de. Irregulares: bueno → mejor, malo → peor.'}
+    ]},
+  { title:'¿Ganga o trampa?',
+    xolo:'Última tienda. El Black Friday no es igual en todos los países. Y, ¡ojo!, no todas las ofertas son de verdad.',
+    reading:{title:'Tres países', tri:[
+      {h:'El Buen Fin (México)', img:'mexico.jpg', emoji:'🇲🇽', p:'Desde 2011, México tiene su propio Black Friday: El Buen Fin, organizado por el Gobierno y las empresas. En 2026 se celebra del 13 al 17 de noviembre, un puente largo que incluye el lunes 16, festivo por la Revolución Mexicana. Muchas tiendas ofrecen descuentos y «meses sin intereses», es decir, la posibilidad de pagar a plazos sin coste extra.'},
+      {h:'El Black Friday en España', img:'espana.jpg', emoji:'🇪🇸', p:'El Black Friday llegó a España hacia 2012 y hoy muchas tiendas tienen ofertas durante toda la semana, la «Black Week». Las asociaciones de consumidores avisan de que algunas tiendas suben los precios unas semanas antes para después «bajarlos». Como respuesta, algunas marcas celebran el «Green Friday»: no hacen descuentos y animan a comprar menos y mejor.'},
+      {h:'Чорна п’ятниця (Ucrania)', img:'ucrania.jpg', emoji:'🇺🇦', p:'En Ucrania, la «Chorna piatnytsia» es muy popular, sobre todo en las tiendas online. Para muchas personas es la ocasión de comprar los regalos de Navidad a mejor precio.'}
+    ]},
+    parts:[
+      {type:'choice', instr:'Según los textos, ¿de qué país se habla?', options:['México','España','Ucrania'],
+       items:[
+        {q:'Las ofertas pueden durar toda una semana.', a:1},
+        {q:'Se puede pagar a plazos sin intereses.', a:0},
+        {q:'Coincide con una fiesta nacional.', a:0},
+        {q:'Algunas marcas piden comprar menos.', a:1},
+        {q:'Mucha gente aprovecha para comprar regalos de Navidad.', a:2},
+        {q:'Algunas tiendas suben los precios antes del Black Friday.', a:1}
+       ],
+       hint:'México: Gobierno, Revolución Mexicana, meses sin intereses. España: Black Week, asociaciones de consumidores, Green Friday. Ucrania: tiendas online y regalos de Navidad.'},
+      {type:'gaps', noReading:true, instr:'Anuncios del Black Friday. Completa con el imperativo (tú). ¡Ojo con las formas negativas!',
+       html:'<p>1. ¡[[0]] ya! ¡Es el último día!</p><p>2. ¡No [[1]] esta oferta!</p><p>3. [[2]] a nuestra tienda y llévate un regalo.</p><p>4. [[3]] tres productos y [[4]] solo dos.</p><p>5. No [[5]] más: los precios suben a medianoche.</p><p>6. [[6]] tu pedido online y recíbelo mañana.</p><p>Y el consejo de Carmen:</p><p>7. [[7]] cuidado con las ofertas falsas.</p><p>8. No [[8]] más de lo necesario.</p><p>9. [[9]] bien antes de comprar.</p>',
+       gaps:[{inf:'comprar',a:['compra']},{inf:'perder',a:['pierdas']},{inf:'venir',a:['ven']},{inf:'elegir',a:['elige']},{inf:'pagar',a:['paga']},{inf:'esperar',a:['esperes']},{inf:'hacer',a:['haz']},{inf:'tener',a:['ten']},{inf:'gastar',a:['gastes']},{inf:'pensar',a:['piensa','piénsalo']}],
+       hint:'Afirmativo (tú) = 3.ª persona del singular del presente de indicativo: compra, elige, piensa. Irregulares: ven, haz, ten. Negativo = no + presente de subjuntivo: no pierdas, no esperes, no gastes.'}
+    ]}
+  ],
+  speak:[
+    {q:'¿Qué compraste la última vez en el Black Friday o en las rebajas? ¿Fue una buena compra?', s:'La última vez compré… · Fue una ganga / un error porque…'},
+    {q:'Para ti, ¿el Black Friday es una ganga o una trampa? ¿Por qué?', s:'Creo que… · Por un lado…, por otro lado… · Hay que tener cuidado con…'},
+    {q:'¿Qué consejos le darías a un amigo antes del Black Friday?', s:'Compara los precios… · No compres… · Piensa si de verdad…'}
+  ],
+  write:{eyebrow:'Escribe', title:'Tu anuncio del Black Friday',
+    text:'Escribe un anuncio para una tienda (real o inventada): cuatro o cinco frases. ¿Qué vende? ¿Qué descuentos tiene? ¿Por qué hay que ir?',
+    remark:'💡 Usa al menos <b>tres verbos en imperativo</b> (ven, compra, no esperes…). Puede ser divertido o serio: tú decides.',
+    fields:[{label:'Línea 1', ph:'Por ejemplo: ¡Ven a Moda Kyiv!'},{label:'Línea 2', ph:''},{label:'Línea 3', ph:''},{label:'Línea 4', ph:''},{label:'Línea 5', ph:'(opcional)'}],
+    minFilled:3, joined:'Anuncio'}
+}
+};
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+var KEY='quest-'+CFG.id;
+var app=document.getElementById('app');
+var S=null;
+function load(){ try{ var v=localStorage.getItem(KEY); return v?JSON.parse(v):null; }catch(e){ return null; } }
+function save(){ try{ localStorage.setItem(KEY, JSON.stringify(S)); }catch(e){} }
+function clearState(){ try{ localStorage.removeItem(KEY); }catch(e){} }
+(function(){
+  var q=location.search||'';
+  if(/[?&]reset=1/.test(q)){ clearState(); try{ indexedDB.deleteDatabase('quest-rec-'+CFG.id); }catch(e){} try{ history.replaceState(null,'',location.pathname); }catch(e){} }
+})();
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+function el(tag,cls,html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
+function norm(s){ return String(s||'').toLowerCase().replace(/[’`´]/g,"'").replace(/[«»"“”.,;:!¡?¿]/g,' ').replace(/\s+/g,' ').trim(); }
+function bare(s){ return norm(s).normalize('NFD').replace(/[̀-ͯ]/g,''); }
+function shuffle(a){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+function stripArt(s){ return s.replace(/^(el|la|los|las|un|una|unos|unas) /,''); }
+// devuelve 'ok' | 'warn' (solo tildes) | 'bad'
+function judge(val, answers, allowArt){
+  var v=norm(val); if(!v) return 'bad';
+  var list=[]; answers.forEach(function(a){ list.push(norm(a)); });
+  if(allowArt){ v=stripArt(v); list=list.map(stripArt); }
+  if(list.indexOf(v)>-1) return 'ok';
+  var vb=bare(v), lb=list.map(function(a){return a.normalize('NFD').replace(/[̀-ͯ]/g,'');});
+  if(lb.indexOf(vb)>-1) return 'warn';
+  return 'bad';
+}
+function pattern(word){ return word.split(' ').map(function(w){ return w.charAt(0)+' '+Array(w.length).join('_ ').trim(); }).join('   '); }
+function fmt(ms){ var s=Math.max(0,Math.floor(ms/1000)); var m=Math.floor(s/60); s=s%60; return (m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
+
+/* ilustraciones propias (SVG); si no hay, se usa el archivo de imagen o el emoji */
+var ILL={};
+var ILLMAP={};
+function pic(src, emoji, cls){
+  var d=el('div','pic'+(cls?' '+cls:''));
+  var key=src?(ILLMAP[src]||src.replace(/\.(jpe?g|png|webp)$/,'')):null;
+  if(src && key && ILL[key]){
+    // primero la foto (si existe en el repositorio); si no, la ilustración
+    var ph=new Image(); ph.alt=''; ph.decoding='async';
+    ph.onerror=function(){ if(ph.parentNode) ph.parentNode.removeChild(ph); d.classList.add('svg'); d.innerHTML=ILL[key]; };
+    ph.onload=function(){ d.classList.add('photo'); };
+    ph.src=src; d.appendChild(ph); return d;
+  }
+  var fb=el('div','fb',emoji||'🌼');
+  if(src){
+    var im=new Image(); im.alt=''; im.loading='lazy'; im.decoding='async';
+    im.onerror=function(){ if(im.parentNode) im.parentNode.removeChild(im); d.appendChild(fb); };
+    im.src=src; d.appendChild(im);
+  } else d.appendChild(fb);
+  return d;
+}
+
+/* guirnalda de etiquetas de precio */
+(function(){
+  var svg=document.getElementById('picado'), cols=['#1F2433','#C8203F','#F5A300','#1F2433','#B3D1ED','#C8203F','#F5A300'];
+  var n=16, w=1200/n, h='<path d="M0 6 Q600 18 1200 6" stroke="#5B6478" stroke-width="1.5" fill="none"/>';
+  for(var i=0;i<n;i++){
+    var cx=i*w+w/2, y=8+Math.sin(i/(n-1)*Math.PI)*5, c=cols[i%cols.length], dark=(c==='#1F2433'||c==='#C8203F');
+    var rot=(i%2?6:-6), tw=w*.62, th=44;
+    h+='<g transform="translate('+cx+' '+y+') rotate('+rot+')">'+
+       '<line x1="0" y1="0" x2="0" y2="8" stroke="#5B6478" stroke-width="1.2"/>'+
+       '<path d="M'+(-tw/2)+' 18 L0 8 L'+(tw/2)+' 18 L'+(tw/2)+' '+(8+th)+' L'+(-tw/2)+' '+(8+th)+' Z" fill="'+c+'"/>'+
+       '<circle cx="0" cy="16" r="2.6" fill="#F3F7FB"/>'+
+       '<text x="0" y="'+(8+th-11)+'" text-anchor="middle" font-family="Bricolage Grotesque,Inter,sans-serif" font-weight="800" font-size="15" fill="'+(dark?'#FFFFFF':'#1F2433')+'">'+(['%','−50','€','%','−30','€','%'][i%7])+'</text></g>';
+  }
+  svg.innerHTML=h;
+})();
+
+/* ============================================================
+   CABECERA: puertas y reloj
+   ============================================================ */
+var doorsEl=document.getElementById('doors');
+function drawDoors(){
+  doorsEl.innerHTML='';
+  for(var i=0;i<5;i++){
+    var d=el('div','door-dot');
+    if(S && S.letters && S.letters[i]){ d.classList.add('open'); d.textContent=S.letters[i]; }
+    else if(S && S.fail && S.fail[i] && (S.door>i || S.phase==='unlock' || S.phase==='final' || S.phase==='done')){ d.classList.add('nolet'); d.textContent='–'; }
+    else d.textContent=i+1;
+    if(S && !S.done && S.door===i && S.started) d.classList.add('now');
+    doorsEl.appendChild(d);
+  }
+}
+
+/* ============================================================
+   TECLADO DE TILDES
+   ============================================================ */
+var accents=document.getElementById('accents'), lastInput=null, lastSel=[0,0];
+['á','é','í','ó','ú','ñ','ü','¿','¡'].forEach(function(ch){
+  var b=el('button',null,ch); b.type='button'; b.tabIndex=-1;
+  var ins=function(e){ e.preventDefault(); insertChar(ch); };
+  b.addEventListener('touchstart',ins,{passive:false});
+  b.addEventListener('mousedown',ins);
+  b.addEventListener('click',function(e){ e.preventDefault(); });
+  accents.appendChild(b);
+});
+function track(inp){
+  var upd=function(){ lastInput=inp; try{ lastSel=[inp.selectionStart, inp.selectionEnd]; }catch(e){} };
+  ['focus','keyup','click','input','select','touchend'].forEach(function(ev){ inp.addEventListener(ev,upd); });
+}
+function insertChar(ch){
+  var inp=(document.activeElement && document.activeElement.classList && document.activeElement.classList.contains('ac'))?document.activeElement:lastInput;
+  if(!inp || inp.disabled || !document.body.contains(inp)) return;
+  var s,e;
+  if(document.activeElement===inp){ s=inp.selectionStart; e=inp.selectionEnd; }
+  else { s=lastSel[0]; e=lastSel[1]; }
+  if(s==null){ s=e=inp.value.length; }
+  inp.focus({preventScroll:true});
+  try{ inp.setRangeText(ch,s,e,'end'); }
+  catch(err){ inp.value=inp.value.slice(0,s)+ch+inp.value.slice(e); inp.selectionStart=inp.selectionEnd=s+ch.length; }
+  lastInput=inp; lastSel=[inp.selectionStart, inp.selectionEnd];
+  inp.dispatchEvent(new Event('input',{bubbles:true}));
+}
+function showAccents(on){ accents.classList.toggle('hidden',!on); }
+function noPaste(n){
+  ['paste','drop'].forEach(function(ev){ n.addEventListener(ev,function(e){ e.preventDefault(); toast('✋ Escribe tú mismo/a, sin copiar y pegar.'); }); });
+}
+function toast(msg){
+  var t=document.getElementById('toast'); if(!t){ t=el('div','toast'); t.id='toast'; document.body.appendChild(t); }
+  t.textContent=msg; t.classList.add('on'); clearTimeout(t._h); t._h=setTimeout(function(){ t.classList.remove('on'); },2200);
+}
+function mkInput(cls, w){
+  var i=el('input',cls); i.type='text'; i.className=(cls||'')+' ac';
+  i.setAttribute('autocomplete','off'); i.setAttribute('autocorrect','off'); i.setAttribute('autocapitalize','off'); i.setAttribute('spellcheck','false');
+  if(w) i.style.width=w;
+  track(i); if(cls!=='txt nopasteoff') noPaste(i); return i;
+}
+
+/* ============================================================
+   PANTALLAS
+   ============================================================ */
+function scrollTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
+
+function startScreen(){
+  showAccents(false); app.innerHTML='';
+  var hero=el('div','hero'); hero.appendChild(pic('hero.jpg','💀🌼')); app.appendChild(hero);
+  var c=el('div','card');
+  c.innerHTML='<div class="eyebrow">'+CFG.eyebrow+'</div><h1>'+CFG.title+'</h1>'+
+    '<p>'+CFG.tagline+'</p>'+
+    '<p class="small">Puedes usar pistas, pero cada pista cuenta. Al final, envías tus respuestas a tu profesora.</p>';
+  var lab=el('label','f','Tu nombre'); c.appendChild(lab);
+  var name=mkInput('txt nopasteoff'); name.placeholder='Nombre y apellido'; name.value=(S&&S.name)||''; c.appendChild(name);
+  c.appendChild(el('label','f','Elige tu nivel'));
+  var lv=el('div','levels'), chosen=null;
+  [['a1','A1','Ropa y tecnología, este / esta, números y precios'],['b1','A2–B1','Comparativos, imperativo, historia del Black Friday']].forEach(function(o){
+    var b=el('button','lvl','<strong>'+o[1]+'</strong><span>'+o[2]+'</span>'); b.type='button';
+    b.onclick=function(){ chosen=o[0]; [].forEach.call(lv.children,function(x){x.classList.remove('sel');}); b.classList.add('sel'); check(); };
+    lv.appendChild(b);
+  });
+  c.appendChild(lv);
+  var acts=el('div','actions'); var go=el('button','btn','Empezar el viaje →'); go.disabled=true; acts.appendChild(go); c.appendChild(acts);
+  function check(){ go.disabled=!(chosen && norm(name.value).length>=2); }
+  name.addEventListener('input',check);
+  go.onclick=function(){
+    if(go.disabled) return;
+    S={lv:chosen,name:name.value.trim(),door:0,part:0,letters:[],t0:Date.now(),hints:0,errors:0,started:true,phase:'story'};
+    save(); drawDoors(); route();
+  };
+  app.appendChild(c);
+  // en pantalla de inicio el teclado de tildes ayuda con el nombre
+  name.addEventListener('focus',function(){ showAccents(true); });
+}
+
+function xoloBlock(html){
+  var x=el('div','xolo'); x.appendChild(pic(CFG.guideImg,CFG.guideEmoji,'ava'));
+  x.appendChild(el('div','bubble',html)); return x;
+}
+
+function storyScreen(){
+  showAccents(false); app.innerHTML='';
+  var L=LEVELS[S.lv], D=L.doors[S.door];
+  var c=el('div','card');
+  c.appendChild(el('div','eyebrow','Puerta '+(S.door+1)+' de 5 · Nivel '+L.label));
+  c.appendChild(el('h2',null,esc(D.title)));
+  if(S.door===0) c.appendChild(xoloBlock(L.intro));
+  if(S.door===0) c.appendChild(el('div',null,'&nbsp;'));
+  c.appendChild(xoloBlock(D.xolo));
+  var a=el('div','actions'); var b=el('button','btn','Abrir la puerta →'); a.appendChild(b); c.appendChild(a);
+  b.onclick=function(){ S.phase='task'; S.part=0; save(); route(); };
+  app.appendChild(c); drawDoors(); scrollTop();
+}
+
+/* lectura (texto o tres textos); devuelve lista de huecos si tiene [[n]] */
+function readingBlock(R, gapPart, door){
+  var d=el('details','reading'); d.open=true;
+  d.appendChild(el('summary',null,'📜 '+esc(R.title)));
+  var body=el('div','rtext');
+  if(R.audio){
+    var au=el('div','audio','<span>'+CFG.audioLabel+'</span>');
+    var a=document.createElement('audio'); a.controls=true; a.preload='metadata'; a.src=R.audio;
+    a.addEventListener('error',function(){ au.style.display='none'; });
+    au.appendChild(a); body.appendChild(au);
+  }
+  var gapEls=[];
+  if(R.note) body.appendChild(el('p','small',R.note));
+  if(R.html){
+    if(R.img){ var w=el('div','rimg'); w.appendChild(pic(R.img,R.emoji)); body.appendChild(w); }
+    body.insertAdjacentHTML('beforeend',R.html);
+  }
+  if(R.tri){
+    var t=el('div','tri');
+    R.tri.forEach(function(x){
+      var b=el('div');
+      if(x.img){ var tp=pic(x.img,x.emoji); tp.style.aspectRatio='16/9'; tp.style.maxHeight='240px'; tp.style.marginBottom='10px'; b.appendChild(tp); }
+      b.appendChild(el('h3',null,esc(x.h)));
+      var p=el('p',gapPart?'gaptext':null);
+      if(gapPart){ fillGaps(p, x.p, gapPart, gapEls); }
+      else {
+        var gp=null; (door&&door.parts||[]).forEach(function(pp){ if(pp.inReading) gp=pp; });
+        p.innerHTML=esc(x.p).replace(/\[\[(\d+)\]\]/g,function(m,n){ return gp?'<b style="color:var(--ok)">'+esc(gp.gaps[+n].a[0])+'</b>':'…'; });
+      }
+      b.appendChild(p); t.appendChild(b);
+    });
+    body.appendChild(t);
+  }
+  d.appendChild(body);
+  return {node:d, gaps:gapEls};
+}
+
+function taskScreen(){
+  app.innerHTML='';
+  var L=LEVELS[S.lv], D=L.doors[S.door], P=D.parts[S.part];
+  var head=el('div','card');
+  head.appendChild(el('div','eyebrow','Puerta '+(S.door+1)+' · '+esc(D.title)+(D.parts.length>1?' · Parte '+(S.part+1)+' de '+D.parts.length:'')));
+  head.appendChild(el('h3',null,esc(P.instr)));
+  app.appendChild(head);
+  var gapEls=null;
+  if(D.reading && P.type!=='cards' && !P.noReading){
+    var rb=readingBlock(D.reading, P.inReading?P:null, D);
+    app.appendChild(rb.node); if(P.inReading) gapEls=rb.gaps;
+  }
+  var box=el('div','card'); app.appendChild(box);
+  var api;
+  if(P.type==='choice') api=renderChoice(box,P);
+  else if(P.type==='cards') api=renderCards(box,P);
+  else if(P.type==='type') api=renderType(box,P);
+  else if(P.type==='gaps') api=renderGaps(box,P,gapEls);
+  else if(P.type==='order') api=renderOrder(box,P);
+  showAccents(P.type==='type'||P.type==='gaps');
+
+  var fbl=el('div','fb-line'); box.appendChild(fbl);
+  var hintBox=el('div','hintbox hidden'); box.appendChild(hintBox);
+  var acts=el('div','actions'); box.appendChild(acts);
+  var chk=el('button','btn',P.type==='cards'?'Siguiente →':'Comprobar');
+  acts.appendChild(chk);
+  var hb=null;
+  if(P.hint){ hb=el('button','btn ghost','💡 Pista'); acts.appendChild(hb);
+    hb.onclick=function(){ if(!hintBox.classList.contains('hidden')) return; hintBox.innerHTML='<b>Pista:</b> '+esc(P.hint); hintBox.classList.remove('hidden'); S.hints++; save(); hb.disabled=true; };
+  }
+  var skip=el('button','btn ghost hidden', P.type==='cards'?'Seguir →':'Seguir sin la letra →');
+  acts.appendChild(skip);
+  S.tries=S.tries||0;
+  function finish(){ chk.textContent='Continuar →'; chk.dataset.next='1'; if(hb) hb.disabled=true; skip.classList.add('hidden'); showAccents(false); }
+  function giveUp(msg){
+    var n=api.reveal(); S.missed=(S.missed||0)+n;
+    S.fail=S.fail||[]; S.fail[S.door]=true; save();
+    fbl.className='fb-line warn'; fbl.innerHTML=esc(msg)+(P.type==='order'?' Este es el orden correcto.':' Las respuestas correctas están en verde.')+' <b>Esta puerta se abre, pero sin letra.</b>';
+    finish();
+  }
+  skip.onclick=function(){
+    if(P.type==='cards'){ nextPart(); return; }
+    giveUp('Has decidido seguir.');
+  };
+  var busy=false;
+  chk.onclick=function(){
+    if(busy) return; busy=true; setTimeout(function(){busy=false;},600);
+    if(chk.dataset.next){ nextPart(); return; }
+    var r=api.check();
+    if(r.done){
+      fbl.className='fb-line ok'; fbl.textContent=P.type==='cards'?'':'¡Perfecto! Todo correcto.';
+      if(P.type==='cards'){ nextPart(); return; }
+      finish(); return;
+    }
+    if(P.type==='cards'){ fbl.className='fb-line warn'; fbl.textContent=r.msg; skip.classList.remove('hidden'); return; }
+    if(r.missing){ fbl.className='fb-line warn'; fbl.textContent=r.msg+' Si no sabes, puedes seguir sin la letra.'; skip.classList.remove('hidden'); return; }
+    S.errors++; S.tries++; save();
+    if(S.tries>=2){ giveUp(r.msg); return; }
+    fbl.className='fb-line '+(r.warnOnly?'warn':'bad');
+    fbl.innerHTML=esc(r.msg)+' <b>Tienes una oportunidad más:</b> corrige y comprueba otra vez. La letra solo se gana con todas las respuestas correctas.';
+    skip.classList.remove('hidden');
+  };
+  // Enter = comprobar
+  box.addEventListener('keydown',function(e){ if(e.key==='Enter' && e.target.tagName==='INPUT'){ e.preventDefault(); chk.click(); } });
+  if(gapEls) app.querySelector('.reading').addEventListener('keydown',function(e){ if(e.key==='Enter' && e.target.tagName==='INPUT'){ e.preventDefault(); chk.click(); } });
+  drawDoors(); scrollTop();
+}
+
+function nextPart(){
+  var D=LEVELS[S.lv].doors[S.door];
+  S.tries=0;
+  if(S.part+1<D.parts.length){ S.part++; save(); route(); }
+  else { var f=S.fail&&S.fail[S.door]; S.letters[S.door]=f?'':LETTERS[S.door]; S.phase='unlock'; save(); route(); }
+}
+
+function unlockScreen(){
+  showAccents(false); app.innerHTML='';
+  var c=el('div','card unlock');
+  c.appendChild(el('div','eyebrow','Puerta '+(S.door+1)+' abierta'));
+  var got=!!S.letters[S.door];
+  c.appendChild(el('h2',null,got?'¡La puerta se abre!':'La puerta se abre…'));
+  c.appendChild(el('p',null,got?'Detrás de la puerta encuentras una letra:':'…pero esta vez no hay letra. La letra solo se gana con todas las respuestas correctas. ¡Ánimo con la siguiente puerta!'));
+  c.appendChild(el('div','bigletter'+(got?'':' none'),got?LETTERS[S.door]:'?'));
+  c.appendChild(lettersRow());
+  var a=el('div','actions'); a.style.justifyContent='center';
+  var b=el('button','btn',S.door<4?'Siguiente puerta →':'Formar la palabra secreta →'); a.appendChild(b); c.appendChild(a);
+  b.onclick=function(){ if(S.door<4){ S.door++; S.part=0; S.phase='story'; } else { S.phase='final'; } save(); route(); };
+  app.appendChild(c); drawDoors(); scrollTop();
+}
+
+function lettersRow(all){
+  var lt=el('div','letters');
+  for(var i=0;i<5;i++){
+    var x=S.letters[i];
+    if(x) lt.appendChild(el('span',null,x));
+    else if(all || (S.fail&&S.fail[i]&&i<=S.door)) lt.appendChild(el('span','miss','?'));
+  }
+  return lt;
+}
+
+function finalScreen(){
+  app.innerHTML='';
+  var c=el('div','card unlock');
+  c.appendChild(el('div','eyebrow','La palabra secreta'));
+  c.appendChild(el('h2',null,'Ordena las letras'));
+  c.appendChild(lettersRow(true));
+  var have=S.letters.filter(function(x){return x;}).length;
+  c.appendChild(xoloBlock((have<5?'Te faltan '+(5-have)+' letra'+(5-have>1?'s':'')+', ¡pero puedes adivinar la palabra! ':'')+CFG.secretHint));
+  var inp=mkInput('txt'); inp.placeholder='La palabra secreta'; inp.style.marginTop='16px'; inp.style.textAlign='center'; c.appendChild(inp);
+  var fbl=el('div','fb-line'); c.appendChild(fbl);
+  var a=el('div','actions'); a.style.justifyContent='center'; var b=el('button','btn gold',CFG.finalBtn); a.appendChild(b); c.appendChild(a);
+  var show=el('button','btn ghost hidden','Ver la palabra'); a.appendChild(show);
+  show.onclick=function(){ inp.value=CFG.secret; inp.disabled=true; S.missed=(S.missed||0)+1; save(); show.classList.add('hidden'); fbl.className='fb-line warn'; fbl.textContent='La palabra secreta es '+CFG.secret+'. ¡Ya puedes salir!'; };
+  function go(){
+    var r=judge(inp.value,CFG.secretAlts,false);
+    if(r==='ok'){ S.done=true; S.tEnd=Date.now(); S.phase='done'; save(); route(); }
+    else { S.errors++; save(); fbl.className='fb-line bad'; fbl.textContent='Mmm… no es esa. Usa las cinco letras.'; show.classList.remove('hidden'); }
+  }
+  b.onclick=go; inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); go(); } });
+  app.appendChild(c); showAccents(false); drawDoors(); scrollTop();
+}
+
+var FORMSPREE='https://formspree.io/f/xaqarvll';
+
+function mkArea(rows){
+  var t=el('textarea','txt area ac'); t.rows=rows||3;
+  t.setAttribute('autocomplete','off'); t.setAttribute('autocorrect','off'); t.setAttribute('autocapitalize','sentences'); t.setAttribute('spellcheck','false');
+  track(t); noPaste(t); return t;
+}
+
+/* ---------- grabaciones (se guardan en el dispositivo hasta enviar) ---------- */
+var REC_MAX=90;
+function idb(){ return new Promise(function(res,rej){ try{ var r=indexedDB.open('quest-rec-'+CFG.id,1); r.onupgradeneeded=function(){ r.result.createObjectStore('b'); }; r.onsuccess=function(){ res(r.result); }; r.onerror=function(){ rej(r.error); }; }catch(e){ rej(e); } }); }
+function putBlob(k,b){ return idb().then(function(db){ return new Promise(function(res){ var t=db.transaction('b','readwrite'); t.objectStore('b').put(b,k); t.oncomplete=res; t.onerror=res; }); }).catch(function(){}); }
+function getBlob(k){ return idb().then(function(db){ return new Promise(function(res){ var q=db.transaction('b').objectStore('b').get(k); q.onsuccess=function(){ res(q.result||null); }; q.onerror=function(){ res(null); }; }); }).catch(function(){ return null; }); }
+function clearBlobs(){ return idb().then(function(db){ return new Promise(function(res){ var t=db.transaction('b','readwrite'); t.objectStore('b').clear(); t.oncomplete=res; t.onerror=res; }); }).catch(function(){}); }
+function extOf(t){ return /mp4|aac|m4a/.test(t)?'m4a':/ogg/.test(t)?'ogg':'webm'; }
+var curRec=null;
+
+function recorder(key, onChange){
+  var box=el('div','rec');
+  var row=el('div','recrow');
+  var btn=el('button','recbtn','<span class="dot"></span><span class="lbl">Grabar</span>'); btn.type='button';
+  var info=el('span','recinfo','Pulsa para grabar tu respuesta (máx. '+REC_MAX+' s).');
+  var meter=el('div','meter','<i></i>');
+  row.appendChild(btn); row.appendChild(info); box.appendChild(row); box.appendChild(meter);
+  var out=el('div','recout'); box.appendChild(out);
+  var blob=null, mr=null, stream=null, chunks=[], t0=0, tick=null, ac=null, anI=null;
+  function show(b){
+    blob=b; out.innerHTML='';
+    if(!b){ return; }
+    var a=document.createElement('audio'); a.controls=true; a.src=URL.createObjectURL(b); out.appendChild(a);
+    out.appendChild(el('div','small','Escucha tu grabación. Si no te gusta, graba otra vez.'));
+    btn.querySelector('.lbl').textContent='Grabar de nuevo'; info.textContent='✓ Grabación guardada';
+    box.classList.add('done'); onChange&&onChange();
+  }
+  getBlob(key).then(function(b){ if(b) show(b); });
+  function stop(){ if(mr && mr.state==='recording') mr.stop(); }
+  btn.onclick=function(){
+    if(box.classList.contains('locked')) return;
+    if(mr && mr.state==='recording'){ stop(); return; }
+    if(curRec && curRec!==stop) curRec();
+    if(!navigator.mediaDevices || !window.MediaRecorder){ info.className='recinfo bad'; info.textContent='Este navegador no permite grabar. Usa Chrome o Safari actualizado.'; return; }
+    navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true,noiseSuppression:true}}).then(function(st){
+      stream=st;
+      var mime=['audio/webm;codecs=opus','audio/webm','audio/mp4','audio/ogg'].filter(function(t){ return MediaRecorder.isTypeSupported(t); })[0]||'';
+      mr=new MediaRecorder(st, mime?{mimeType:mime,audioBitsPerSecond:48000}:{});
+      chunks=[]; mr.ondataavailable=function(e){ if(e.data && e.data.size) chunks.push(e.data); };
+      mr.onstop=function(){
+        clearInterval(tick); clearInterval(anI); try{ ac&&ac.close(); }catch(e){} meter.firstChild.style.width='0';
+        stream.getTracks().forEach(function(t){ t.stop(); });
+        box.classList.remove('on'); curRec=null;
+        var b=new Blob(chunks,{type:mr.mimeType||'audio/webm'});
+        if(Date.now()-t0<1500 || b.size<1000){ info.className='recinfo bad'; info.textContent='La grabación es demasiado corta. Graba otra vez.'; btn.querySelector('.lbl').textContent=blob?'Grabar de nuevo':'Grabar'; return; }
+        putBlob(key,b); info.className='recinfo'; show(b);
+      };
+      mr.start(1000); t0=Date.now(); curRec=stop; box.classList.add('on'); out.innerHTML='';
+      btn.querySelector('.lbl').textContent='Parar'; info.className='recinfo'; info.textContent='Grabando… 0:00';
+      tick=setInterval(function(){ var sec=Math.floor((Date.now()-t0)/1000); info.textContent='Grabando… '+Math.floor(sec/60)+':'+('0'+sec%60).slice(-2)+' / '+Math.floor(REC_MAX/60)+':'+('0'+REC_MAX%60).slice(-2); if(sec>=REC_MAX) stop(); },250);
+      try{ ac=new (window.AudioContext||window.webkitAudioContext)(); var an=ac.createAnalyser(); ac.createMediaStreamSource(st).connect(an); var buf=new Uint8Array(an.fftSize);
+        anI=setInterval(function(){ an.getByteTimeDomainData(buf); var m=0; for(var i=0;i<buf.length;i++) m=Math.max(m,Math.abs(buf[i]-128)); meter.firstChild.style.width=Math.min(100,m/64*100)+'%'; },100); }catch(e){}
+    }).catch(function(){ info.className='recinfo bad'; info.textContent='No hay acceso al micrófono. Permite el micrófono en el navegador y pulsa otra vez.'; });
+  };
+  return {node:box, get:function(){ return blob; }, lock:function(){ box.classList.add('locked'); btn.disabled=true; }};
+}
+
+function doneScreen(){
+  showAccents(false); app.innerHTML='';
+  var L=LEVELS[S.lv];
+  S.ans=S.ans||{};
+  var c=el('div','card');
+  var cert=el('div','cert');
+  cert.innerHTML='<img class="certlogo" src="icon-192.png" alt="@eduproberegova" width="72" height="72"><div class="eyebrow">'+CFG.title+' · Nivel '+L.label+'</div>'+
+    '<h2>'+CFG.certTitle+'</h2><div class="who">'+esc(S.name)+'</div>'+
+    '<p>'+CFG.certText+'</p>';
+  var st=el('div','stats');
+  var have=S.letters.filter(function(x){return x;}).length;
+  st.innerHTML='<div class="stat">Letras<b>'+have+'/5</b></div><div class="stat">Pistas<b>'+S.hints+'</b></div><div class="stat">Respuestas vistas<b>'+(S.missed||0)+'</b></div>';
+  if(have===5) cert.querySelector('h2').insertAdjacentHTML('afterend','<p><b>🏆 ¡Perfecto: cinco letras de cinco!</b></p>');
+  cert.appendChild(st);
+  cert.appendChild(el('p','small','Último paso: graba tus respuestas, escribe tu texto y envíalo todo a tu profesora.'));
+  c.appendChild(cert);
+  app.appendChild(c);
+
+  var fields=[];
+  function bind(key,node){ node.value=S.ans[key]||''; node.addEventListener('input',function(){ S.ans[key]=node.value; save(); }); node.addEventListener('focus',function(){ if(!S.sent) showAccents(true); }); return node; }
+
+  // 1. Hablar: grabación de voz
+  var sp=el('div','card');
+  sp.appendChild(el('div','eyebrow','1 · Habla'));
+  sp.appendChild(el('h2',null,'¡Ahora habla!'));
+  sp.appendChild(el('p',null,'Graba tu respuesta a cada pregunta. Habla en español unos 30–60 segundos. Las frases de ayuda te pueden servir.'));
+  var g=el('div','speak'), recs=[];
+  L.speak.forEach(function(x,i){
+    var q=el('div','sq','<b>'+(i+1)+'. '+esc(x.q)+'</b><span>'+esc(x.s)+'</span>');
+    var r=recorder(S.lv+'-p'+(i+1)); q.appendChild(r.node); recs.push({q:x.q,r:r,n:i+1});
+    g.appendChild(q);
+  });
+  sp.appendChild(g); app.appendChild(sp);
+
+  // 2. Escribir
+  var W=L.write;
+  var wc=el('div','card');
+  wc.innerHTML='<div class="eyebrow">2 · '+W.eyebrow+'</div><h2>'+W.title+'</h2><p>'+W.text+'</p>'+(W.remark?'<p class="remark">'+W.remark+'</p>':'');
+  var wb=el('div', W.joined?'verses':'ocard');
+  W.fields.forEach(function(f,k){
+    var row=el('label','verse','<span>'+esc(f.label)+'</span>');
+    var vi=bind('w'+(k+1),mkInput('txt')); if(f.ph) vi.placeholder=f.ph; row.appendChild(vi); wb.appendChild(row);
+    fields.push({key:'w'+(k+1),label:f.label,el:vi});
+  });
+  wc.appendChild(wb); app.appendChild(wc);
+
+  // 3. Enviar
+  var sc=el('div','card send');
+  sc.appendChild(el('div','eyebrow','3 · Envía'));
+  var fbl=el('div','fb-line');
+  var acts=el('div','actions'); acts.style.justifyContent='center';
+  var send=el('button','btn gold','📨 Enviar a mi profesora'); acts.appendChild(send);
+  sc.appendChild(acts); sc.appendChild(fbl);
+  var dl=el('div','dl'); sc.appendChild(dl);
+  app.appendChild(sc);
+
+  function lock(msg){
+    fields.forEach(function(f){ f.el.disabled=true; }); recs.forEach(function(r){ r.r.lock(); });
+    send.disabled=true; send.textContent='✓ Enviado';
+    fbl.className='fb-line ok'; fbl.textContent=msg||'¡Enviado! Tu profesora ya tiene tus grabaciones y tu texto. ¡Gracias!';
+    showAccents(false);
+  }
+  function offerDownloads(){
+    dl.innerHTML='<p class="small">Descarga tus grabaciones y envíaselas a tu profesora:</p>';
+    recs.forEach(function(x){ var b=x.r.get(); if(!b) return;
+      var a=document.createElement('a'); a.className='btn ghost'; a.download=(S.name||'alumno').replace(/\s+/g,'_')+'_'+CFG.fileTag+'_P'+x.n+'.'+extOf(b.type); a.href=URL.createObjectURL(b); a.textContent='⬇ Grabación '+x.n; dl.appendChild(a); });
+  }
+  if(S.sent){ lock(S.sentMsg); if(S.sentNoAudio) setTimeout(offerDownloads,400); }
+
+  function build(withFiles){
+    var fd=new FormData();
+    var doors=[]; for(var i=0;i<5;i++){ doors.push('Puerta '+(i+1)+': '+(S.letters[i]?'letra '+S.letters[i]:'sin letra')); }
+    fd.append('_subject',CFG.subject+' · '+L.label+' · '+S.name);
+    fd.append('Nombre',S.name); fd.append('Nivel',L.label);
+    fd.append('Letras',have+'/5'); fd.append('Puertas',doors.join(' · '));
+    fd.append('Pistas usadas',String(S.hints)); fd.append('Respuestas vistas (no encontradas)',String(S.missed||0));
+    recs.forEach(function(x){ fd.append('Pregunta '+x.n, x.q); });
+    fd.append('Tarea escrita', W.title);
+    if(W.joined) fd.append(W.joined, fields.map(function(f){return f.el.value.trim();}).filter(Boolean).join('\n'));
+    else fields.forEach(function(f){ fd.append(f.label, f.el.value.trim()); });
+    if(withFiles) recs.forEach(function(x){ var b=x.r.get(); fd.append('Grabación '+x.n, b, (S.name||'alumno').replace(/\s+/g,'_')+'_P'+x.n+'.'+extOf(b.type)); });
+    else fd.append('Grabaciones','No adjuntadas: el alumno las descargará y te las enviará.');
+    return fd;
+  }
+  function post(fd){ return fetch(FORMSPREE,{method:'POST',headers:{'Accept':'application/json'},body:fd}).then(function(r){ if(!r.ok) throw new Error(String(r.status)); return r; }); }
+
+  send.onclick=function(){
+    if(S.sent) return;
+    if(curRec) curRec();
+    var noRec=recs.filter(function(x){ return !x.r.get(); });
+    var filled=fields.filter(function(f){ return norm(f.el.value).length>=2; }).length;
+    var missing=filled<W.minFilled ? fields.filter(function(f){ return norm(f.el.value).length<2; }).slice(0, W.minFilled-filled) : [];
+    fields.forEach(function(f){ f.el.classList.toggle('need', missing.indexOf(f)>-1); });
+    recs.forEach(function(x){ x.r.node.classList.toggle('need', noRec.indexOf(x)>-1); });
+    if(noRec.length){ fbl.className='fb-line bad'; fbl.textContent='Graba tu respuesta a '+(noRec.length===1?'la pregunta '+noRec[0].n:'las preguntas '+noRec.map(function(x){return x.n;}).join(', '))+'.'; return; }
+    if(missing.length){ fbl.className='fb-line bad'; fbl.textContent=(W.minFilled<W.fields.length?'Escribe al menos '+W.minFilled+' líneas':'Completa todas las líneas')+' antes de enviar.'; missing[0].el.focus(); return; }
+    send.disabled=true; send.textContent='Enviando…'; fbl.className='fb-line'; fbl.textContent='Enviando… no cierres la página.';
+    post(build(true)).then(function(){
+      S.sent=true; S.sentNoAudio=false; S.sentMsg=null; save(); lock();
+    }).catch(function(){
+      // si el formulario no admite archivos, se envía el texto y el alumno descarga las grabaciones
+      post(build(false)).then(function(){
+        S.sent=true; S.sentNoAudio=true; S.sentMsg='Tu texto se ha enviado. Las grabaciones no se pudieron adjuntar: descárgalas abajo y envíaselas a tu profesora.';
+        save(); lock(S.sentMsg); fbl.className='fb-line warn'; offerDownloads();
+      }).catch(function(){
+        send.disabled=false; send.textContent='📨 Enviar a mi profesora';
+        fbl.className='fb-line bad'; fbl.textContent='No se pudo enviar. Revisa tu conexión a internet e inténtalo otra vez.';
+      });
+    });
+  };
+
+  var a=el('div','actions'); a.style.justifyContent='center';
+  var again=el('button','btn ghost','Jugar otra vez'); a.appendChild(again); app.appendChild(a);
+  again.onclick=function(){ if(confirm('¿Empezar de nuevo? Tus respuestas y grabaciones se borrarán de este dispositivo.')){ clearBlobs(); clearState(); S=null; drawDoors(); startScreen(); } };
+  drawDoors(); scrollTop();
+}
+
+/* ============================================================
+   TIPOS DE TAREA
+   ============================================================ */
+function renderChoice(box,P){
+  var wrap=el('div','items'), state=[];
+  P.items.forEach(function(it,i){
+    var row=el('div','item'); row.appendChild(el('div','q','<span class="num">'+(i+1)+'</span>'+esc(it.q)));
+    var opts=el('div','opts'); var list=it.opts||P.options;
+    state[i]={sel:null,row:row,ok:false};
+    list.forEach(function(o,k){
+      var b=el('button','opt',esc(o)); b.type='button';
+      b.onclick=function(){ if(state[i].ok) return; state[i].sel=k; [].forEach.call(opts.children,function(x){x.classList.remove('sel');}); b.classList.add('sel'); row.classList.remove('bad'); };
+      opts.appendChild(b);
+    });
+    row.appendChild(opts); wrap.appendChild(row);
+  });
+  box.appendChild(wrap);
+  return {check:function(){
+    var missing=0, wrong=0;
+    P.items.forEach(function(it,i){
+      var s=state[i]; if(s.ok) return;
+      if(s.sel===null){ missing++; return; }
+      if(s.sel===it.a){ s.ok=true; s.row.classList.remove('bad'); s.row.classList.add('ok'); }
+      else { wrong++; s.row.classList.add('bad'); }
+    });
+    if(missing) return {done:false,missing:true,msg:'Te faltan '+missing+' respuesta'+(missing>1?'s':'')+'.'};
+    if(wrong) return {done:false,msg:'Hay '+wrong+' respuesta'+(wrong>1?'s':'')+' incorrecta'+(wrong>1?'s':'')+'.'};
+    return {done:true};
+  }, reveal:function(){
+    var n=0;
+    P.items.forEach(function(it,i){
+      var s=state[i]; if(s.ok) return;
+      n++; s.row.classList.remove('bad'); s.row.classList.add('shown');
+      var bs=s.row.querySelectorAll('.opt'); if(bs[it.a]) bs[it.a].classList.add('right');
+    });
+    return n;
+  }};
+}
+
+function renderCards(box,P){
+  var g=el('div','cards'), seen=0, total=P.cards.length;
+  P.cards.forEach(function(cd){
+    var f=el('button','flip'); f.type='button';
+    var inn=el('div','in');
+    var fr=el('div','face front'); fr.appendChild(pic(cd.img,cd.emoji)); fr.appendChild(el('div','w',esc(cd.art+' '+cd.main)));
+    var bk=el('div','face back'); bk.appendChild(el('div','w',esc(cd.art+' '+cd.main))); bk.appendChild(el('p',null,esc(cd.back)));
+    inn.appendChild(fr); inn.appendChild(bk); f.appendChild(inn);
+    f.onclick=function(){ f.classList.toggle('on'); if(!f.dataset.s){ f.dataset.s=1; f.classList.add('seen'); seen++; } };
+    g.appendChild(f);
+  });
+  box.appendChild(g);
+  return {check:function(){
+    if(seen<total) return {done:false,warnOnly:true,msg:'Dale la vuelta a todas las tarjetas ('+seen+'/'+total+').'};
+    return {done:true};
+  }, reveal:function(){ return 0; }};
+}
+
+function renderType(box,P){
+  var g=el('div','tgrid'), rows=[];
+  shuffle(P.items).forEach(function(it){
+    var c=el('div','titem');
+    if(P.showImg) c.appendChild(pic(it.img,it.emoji));
+    if(P.showClue) c.appendChild(el('div','clue',esc(it.back)));
+    if(P.showPat) c.appendChild(el('div','pat',esc(it.art+'  '+pattern(it.main.toLowerCase()))));
+    var a=el('div','ans'); a.appendChild(el('span','art',esc(it.art)));
+    var inp=mkInput('txt'); if(P.showFirst) inp.placeholder=it.main.charAt(0).toLowerCase()+'…';
+    a.appendChild(inp); c.appendChild(a);
+    var note=el('div','note'); c.appendChild(note);
+    inp.addEventListener('input',function(){ if(!c.classList.contains('ok')){ c.classList.remove('bad','warn'); note.textContent=''; } });
+    rows.push({it:it,c:c,inp:inp,note:note,ok:false});
+    g.appendChild(c);
+  });
+  box.appendChild(g);
+  return {check:function(){
+    var bad=0,warn=0,empty=0;
+    rows.forEach(function(r){
+      if(r.ok) return;
+      if(!norm(r.inp.value)){ empty++; return; }
+      var j=judge(r.inp.value,[r.it.main].concat(r.it.alts),true);
+      r.c.classList.remove('bad','warn');
+      if(j==='ok'){ r.ok=true; r.c.classList.add('ok'); r.inp.disabled=true; r.note.textContent=''; }
+      else if(j==='warn'){ warn++; r.c.classList.add('warn'); r.note.className='note warn'; r.note.textContent='¡Casi! Revisa la tilde o la ñ.'; }
+      else { bad++; r.c.classList.add('bad'); r.note.className='note bad'; r.note.textContent='No es correcto.'; }
+    });
+    if(empty) return {done:false,missing:true,msg:'Te faltan '+empty+' palabra'+(empty>1?'s':'')+'.'};
+    if(bad||warn) return {done:false,warnOnly:!bad,msg:bad?('Hay '+(bad+warn)+' palabra'+((bad+warn)>1?'s':'')+' por corregir.'):'¡Casi! Solo faltan tildes.'};
+    return {done:true};
+  }, reveal:function(){
+    var n=0;
+    rows.forEach(function(r){
+      if(r.ok) return;
+      n++; r.inp.disabled=true; r.c.classList.remove('bad','warn'); r.c.classList.add('shown');
+      r.note.className='note sol'; r.note.textContent='✓ '+r.it.art+' '+r.it.main;
+    });
+    return n;
+  }};
+}
+
+function fillGaps(container, src, P, list){
+  var parts=src.split(/\[\[(\d+)\]\]/);
+  for(var i=0;i<parts.length;i++){
+    if(i%2===0){ container.appendChild(document.createTextNode(parts[i])); continue; }
+    var n=+parts[i], G=P.gaps[n];
+    var span=el('span','gap');
+    var longest=G.a.reduce(function(m,x){return Math.max(m,x.length);},0);
+    var inp=mkInput(null, Math.max(7,longest+3)+'ch');
+    span.appendChild(el('span','n',String(n+1)));
+    span.appendChild(inp); span.appendChild(el('span','inf','('+esc(G.inf)+')'));
+    inp.addEventListener('input',function(){ if(!this.parentNode.classList.contains('ok')) this.parentNode.classList.remove('bad','warn'); });
+    container.appendChild(span);
+    list[n]={span:span,inp:inp,G:G,ok:false};
+  }
+}
+function renderGaps(box,P,external){
+  var list=external;
+  if(!list){
+    list=[];
+    if(P.img){ var w=el('div','rimg'); w.style.maxWidth='420px'; w.style.margin='0 auto 14px'; var pp=pic(P.img,P.emoji); pp.style.aspectRatio='4/3'; w.appendChild(pp); box.appendChild(w); }
+    var t=el('div','gaptext');
+    var tmp=document.createElement('div'); tmp.innerHTML=P.html;
+    [].forEach.call(tmp.children,function(node){
+      var p=el(node.tagName.toLowerCase()); fillGaps(p,node.textContent,P,list); t.appendChild(p);
+    });
+    box.appendChild(t);
+  } else {
+    box.appendChild(el('p','small','Escribe en los huecos de los textos de arriba ↑'));
+  }
+  return {check:function(){
+    var bad=0,warn=0,empty=0;
+    list.forEach(function(r){
+      if(r.ok) return;
+      if(!norm(r.inp.value)){ empty++; return; }
+      var j=judge(r.inp.value,r.G.a,false);
+      r.span.classList.remove('bad','warn');
+      if(j==='ok'){ r.ok=true; r.span.classList.add('ok'); r.inp.disabled=true; }
+      else if(j==='warn'){ warn++; r.span.classList.add('warn'); }
+      else { bad++; r.span.classList.add('bad'); }
+    });
+    if(empty) return {done:false,missing:true,msg:'Te faltan '+empty+' hueco'+(empty>1?'s':'')+'.'};
+    if(bad||warn){
+      var m=[]; if(bad) m.push(bad+' incorrecto'+(bad>1?'s':'')+' (en rojo)'); if(warn) m.push(warn+' con la tilde mal (en amarillo)');
+      return {done:false,warnOnly:!bad,msg:'Revisa: '+m.join(' y ')+'.'};
+    }
+    return {done:true};
+  }, reveal:function(){
+    var n=0;
+    list.forEach(function(r){
+      if(r.ok) return;
+      n++; r.inp.disabled=true; r.span.classList.remove('bad','warn'); r.span.classList.add('shown');
+      var sol=el('span','sol','✓ '+esc(r.G.a[0])); r.span.insertBefore(sol, r.inp.nextSibling);
+    });
+    return n;
+  }};
+}
+
+function renderOrder(box,P){
+  var seq=el('div','seq'), pool=el('div','pool');
+  var correct=P.items.slice(), locked=0;
+  box.appendChild(el('div','small','Tu orden:')); box.appendChild(seq);
+  box.appendChild(el('div','small','Frases:')); box.appendChild(pool);
+  function mk(text){
+    var b=el('button','chip'); b.type='button'; b.innerHTML='<span class="k"></span><span>'+esc(text)+'</span>'; b.dataset.t=text;
+    b.onclick=function(){
+      if(b.classList.contains('ok')) return;
+      if(b.parentNode===pool) seq.appendChild(b); else pool.appendChild(b);
+      renum();
+    };
+    return b;
+  }
+  function renum(){ [].forEach.call(seq.children,function(x,i){ x.querySelector('.k').textContent=(i+1)+'.'; }); [].forEach.call(pool.children,function(x){ x.querySelector('.k').textContent='•'; }); }
+  var sh=shuffle(correct); if(sh.join('|')===correct.join('|')) sh.reverse();
+  sh.forEach(function(t){ pool.appendChild(mk(t)); }); renum();
+  return {check:function(){
+    if(pool.children.length) return {done:false,missing:true,msg:'Coloca todas las frases primero.'};
+    var kids=[].slice.call(seq.children), wrong=[];
+    kids.forEach(function(k,i){ if(k.dataset.t===correct[i]) k.classList.add('ok'); else wrong.push(k); });
+    if(!wrong.length) return {done:true};
+    // las que están bien se quedan; las demás vuelven a las frases
+    wrong.forEach(function(k){ k.classList.add('flash'); });
+    setTimeout(function(){
+      // las bien colocadas al principio, en su sitio
+      var keep=kids.filter(function(k){return k.classList.contains('ok');});
+      seq.innerHTML='';
+      var firstWrong=kids.findIndex(function(k){return !k.classList.contains('ok');});
+      kids.forEach(function(k,i){
+        if(i<firstWrong){ seq.appendChild(k); }
+        else { k.classList.remove('ok','flash'); pool.appendChild(k); }
+      });
+      renum();
+    },450);
+    var good=0; while(good<kids.length && kids[good].dataset.t===correct[good]) good++;
+    return {done:false,msg: good===0 ? 'La primera frase no es correcta.' : (good===1 ? 'La primera frase está bien. Ordena las demás.' : 'Las primeras '+good+' frases están bien. Ordena las demás.')};
+  }, reveal:function(){
+    var all=[].slice.call(seq.children).concat([].slice.call(pool.children));
+    var kept=0; while(kept<seq.children.length && seq.children[kept].dataset.t===correct[kept] && seq.children[kept].classList.contains('ok')) kept++;
+    seq.innerHTML=''; pool.innerHTML='';
+    correct.forEach(function(t,i){
+      var c=all.filter(function(x){return x.dataset.t===t;})[0];
+      c.classList.remove('flash'); c.classList.add(i<kept?'ok':'shown'); seq.appendChild(c);
+    });
+    renum();
+    return correct.length-kept;
+  }};
+}
+
+/* ============================================================
+   ROUTER
+   ============================================================ */
+function route(){
+  if(!S){ startScreen(); drawDoors(); return; }
+  if(S.phase==='story') return storyScreen();
+  if(S.phase==='task') return taskScreen();
+  if(S.phase==='unlock') return unlockScreen();
+  if(S.phase==='final') return finalScreen();
+  if(S.phase==='done') return doneScreen();
+  startScreen();
+}
+S=load();
+if(S && !LEVELS[S.lv]) { S=null; clearState(); }
+route(); drawDoors();
+});
+</script>
+</body>
+</html>
